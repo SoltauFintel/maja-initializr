@@ -1,4 +1,3 @@
-package templates.build
 plugins {
 	id "com.bmuschko.docker-java-application" version "3.0.6"
 }
