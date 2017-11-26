@@ -4,12 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class EngineOptions {
-	private boolean majaAuth = false;
-	private boolean majaAuthMongo = false;
-	private boolean majaMongo = false;
-	private boolean majaRedis = false;
-	/** e.g. "SBAdmin2" */
-	private String theme;
 	/** a-z, 0-9, "-" */
 	private String projectName;
 	/** with dots, not with slashes */
@@ -17,6 +11,12 @@ public class EngineOptions {
 	/** ends usually with 'App' */
 	private String appClassName;
 	private int port = 8080;
+	private boolean majaAuth = false;
+	private boolean majaAuthMongo = false;
+	private boolean majaMongo = false;
+	private boolean majaRedis = false;
+	/** e.g. "SBAdmin2" */
+	private String theme;
 	private boolean facebookLogin = false;
 	private boolean googleLogin = false;
 	/** e.g. "Facebook#4711" */
@@ -24,18 +24,26 @@ public class EngineOptions {
 	private String author = "YOUR_NAME";
 	private String dockerRegistry = "mwvb.de:5000";
 	
-	public Map<String, String> getMap() {
-		Map<String, String> m = new HashMap<>();
-		m.put("theProjectName", projectName);
-		m.put("projectName", projectName.toLowerCase());
-		m.put("packageName", packageName);
-		m.put("appClassName", appClassName);
-		m.put("port", "" + port);
-		m.put("author", author);
-		m.put("dockerRegistry", dockerRegistry);
-		m.put("dependencies", getDependencies());
-		m.put("master", "#@master()");
-		return m;
+	public Map<String, Object> getModel() {
+		Map<String, Object> model = new HashMap<>();
+		model.put("theProjectName", projectName);
+		model.put("projectName", projectName.toLowerCase());
+		model.put("packageName", packageName);
+		model.put("appClassName", appClassName);
+		model.put("port", port);
+		model.put("author", author);
+		model.put("dockerRegistry", dockerRegistry);
+		model.put("dependencies", getDependencies());
+		model.put("master", "#@master()");
+		model.put("auth", isMajaAuth());
+		model.put("authMongo", isMajaAuthMongo());
+		model.put("mongo", isMajaMongo());
+		model.put("redis", isMajaRedis());
+		model.put("facebook", isFacebookLogin());
+		model.put("google", isGoogleLogin());
+		model.put("sbadmin2", "SBAdmin2".equalsIgnoreCase(theme));
+		model.put("singleUser", singleUser);
+		return model;
 	}
 	
 	private String getDependencies() {

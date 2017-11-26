@@ -10,7 +10,7 @@ import spark.ModelAndView;
 
 public class Engine {
 	private final EngineOptions options;
-	private Map<String, String> model;
+	private Map<String, Object> model;
 	private String outputRoot = "output/";
 	
 	public Engine(EngineOptions options) {
@@ -19,7 +19,7 @@ public class Engine {
 	
 	public void generate() {
 		options.validate();
-		model = options.getMap();
+		model = options.getModel();
 		
 		// Eclipse files
 		create("project.txt", ".project");
