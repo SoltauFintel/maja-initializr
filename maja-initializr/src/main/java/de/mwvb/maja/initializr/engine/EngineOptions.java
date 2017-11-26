@@ -28,6 +28,7 @@ public class EngineOptions {
 		Map<String, Object> model = new HashMap<>();
 		model.put("theProjectName", projectName);
 		model.put("projectName", projectName.toLowerCase());
+		model.put("projectName_uppercase", projectName.toUpperCase());
 		model.put("packageName", packageName);
 		model.put("appClassName", appClassName);
 		model.put("port", port);
@@ -76,6 +77,18 @@ public class EngineOptions {
 		if (author == null || author.trim().isEmpty()) {
 			throw new RuntimeException("author must not be empty!");
 		}
+		if (isFacebookLogin() && !isMajaAuth()) {
+			throw new RuntimeException("Auth false and Facebook-login true is not valid!");
+		}
+		if (isGoogleLogin() && !isMajaAuth()) {
+			throw new RuntimeException("Auth false and Google-login true is not valid!");
+		}
+		if (isMajaAuth() && !isFacebookLogin() && !isGoogleLogin()) {
+			throw new RuntimeException("Auth true and no login true is not valid!");
+		}
+		if (!isMajaAuth() && singleUser != null) {
+			throw new RuntimeException("singleUser set without auth true is not valid!");
+		}
 	}
 	
 	public boolean isMajaAuth() {
@@ -92,6 +105,10 @@ public class EngineOptions {
 
 	public void setMajaAuthMongo(boolean majaAuthMongo) {
 		this.majaAuthMongo = majaAuthMongo;
+		if (majaAuthMongo) {
+			setMajaAuth(true);
+			setMajaMongo(true);
+		}
 	}
 
 	public boolean isMajaMongo() {

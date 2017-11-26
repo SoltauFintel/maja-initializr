@@ -11,6 +11,8 @@ public class EngineTest {
 		o.setPackageName("de.mwvb.test");
 		o.setAppClassName("TestApp");
 		o.setAuthor("Max Mustermann");
+		o.setMajaAuthMongo(true);
+		o.setFacebookLogin(true);
 		new Engine(o).generate();
 	}
 }

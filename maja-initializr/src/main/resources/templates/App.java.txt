@@ -1,23 +1,37 @@
 package ${packageName};
 
+#if ($auth)
 import de.mwvb.maja.auth.AuthPlugin;
 import de.mwvb.maja.auth.AuthorizationDispatcher;
 import de.mwvb.maja.auth.MultiAuthFeature;
+#end
+#if ($facebook)
 import de.mwvb.maja.auth.facebook.FacebookAuthorization;
 import de.mwvb.maja.auth.facebook.FacebookFeature;
+#end
+#if ($google)
 import de.mwvb.maja.auth.google.GoogleAuthorization;
 import de.mwvb.maja.auth.google.GoogleFeature;
+#end
+#if ($authMongo)
 import de.mwvb.maja.auth.rememberme.KnownUser;
 import de.mwvb.maja.auth.rememberme.RememberMeInMongoDB;
+#end
+#if ($mongo)
 import de.mwvb.maja.mongo.Database;
+#end
 import de.mwvb.maja.web.AbstractWebApp;
-import de.mwvb.maja.web.Action;
+import ${packageName}.actions.Index;
+#if ($auth)
 import spark.Request;
+#end
 
 public class ${appClassName} extends AbstractWebApp {
 	public static final String VERSION = "0.1.0";
+#if ($mongo)	
 	public static Database database;
 	public static final String DBNAME = "${projectName}";
+#end
 
 	@Override
 	protected void routes() {
@@ -27,6 +41,7 @@ public class ${appClassName} extends AbstractWebApp {
 	public static void main(String[] args) {
 		new App().start(VERSION);
 	}
+#if ($mongo)
 
 	@Override
 	protected void initDatabase() {
@@ -40,13 +55,40 @@ public class ${appClassName} extends AbstractWebApp {
 		return "MongoDB database: " + config.get("dbname", DBNAME) + "@" + config.get("dbhost", "localhost")
 			+ (config.get("dbpw") == null ? "" : " with password");
 	}
+#end
+#if ($auth)
 	
 	@Override
 	protected void init() {
+#if ($facebook && $google && $authMongo)	
 		auth = new AuthPlugin(
 				new AuthorizationDispatcher(new FacebookAuthorization(), new GoogleAuthorization()),
 				new MultiAuthFeature(new FacebookFeature(), new GoogleFeature()),
-				new RememberMeInMongoDB(database, "${projectName}"));
+				new RememberMeInMongoDB(database, "${projectName_uppercase}"));
+#end				
+#if ($facebook && $google && !$authMongo)	
+		auth = new AuthPlugin(
+				new AuthorizationDispatcher(new FacebookAuthorization(), new GoogleAuthorization()),
+				new MultiAuthFeature(new FacebookFeature(), new GoogleFeature()));
+#end				
+#if ($facebook && !$google && $authMongo)	
+		auth = new AuthPlugin(
+				new FacebookAuthorization(),
+				new FacebookFeature(),
+				new RememberMeInMongoDB(database, "${projectName_uppercase}"));
+#end				
+#if ($facebook && !$google && !$authMongo)	
+		auth = new AuthPlugin(new FacebookAuthorization(), new FacebookFeature());
+#end				
+#if (!$facebook && $google && $authMongo)	
+		auth = new AuthPlugin(
+				new GoogleAuthorization(),
+				new GoogleFeature(),
+				new RememberMeInMongoDB(database, "${projectName_uppercase}"));
+#end				
+#if (!$facebook && $google && !$authMongo)	
+		auth = new AuthPlugin(new GoogleAuthorization(), new GoogleFeature());
+#end				
 	}
 
 	public static String getUserId(Request req) {
@@ -56,4 +98,5 @@ public class ${appClassName} extends AbstractWebApp {
 		}
 		return userId;
 	}
+#end
 }
