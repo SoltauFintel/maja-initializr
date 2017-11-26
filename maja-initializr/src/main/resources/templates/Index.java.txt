@@ -1,0 +1,10 @@
+package ${packageName};
+
+import de.mwvb.maja.web.Action;
+
+public class Index extends Action {
+
+	@Override
+	protected void execute() {
+	}
+}

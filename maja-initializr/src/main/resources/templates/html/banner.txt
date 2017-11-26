@@ -1,0 +1,2 @@
+[projectName]
+     powered by Maja

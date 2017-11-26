@@ -1,0 +1,59 @@
+package ${packageName};
+
+import de.mwvb.maja.auth.AuthPlugin;
+import de.mwvb.maja.auth.AuthorizationDispatcher;
+import de.mwvb.maja.auth.MultiAuthFeature;
+import de.mwvb.maja.auth.facebook.FacebookAuthorization;
+import de.mwvb.maja.auth.facebook.FacebookFeature;
+import de.mwvb.maja.auth.google.GoogleAuthorization;
+import de.mwvb.maja.auth.google.GoogleFeature;
+import de.mwvb.maja.auth.rememberme.KnownUser;
+import de.mwvb.maja.auth.rememberme.RememberMeInMongoDB;
+import de.mwvb.maja.mongo.Database;
+import de.mwvb.maja.web.AbstractWebApp;
+import de.mwvb.maja.web.Action;
+import spark.Request;
+
+public class ${appClassName} extends AbstractWebApp {
+	public static final String VERSION = "0.1.0";
+	public static Database database;
+	public static final String DBNAME = "${projectName}";
+
+	@Override
+	protected void routes() {
+		_get("/", Index.class);
+	}
+	
+	public static void main(String[] args) {
+		new App().start(VERSION);
+	}
+
+	@Override
+	protected void initDatabase() {
+		database = new Database(config.get("dbhost", "localhost"), config.get("dbname", DBNAME),
+				config.get("dbuser"), config.get("dbpw"),
+				KnownUser.class); // TODO add your entity
+	}
+	
+	@Override
+	protected String getDatabaseInfo() {
+		return "MongoDB database: " + config.get("dbname", DBNAME) + "@" + config.get("dbhost", "localhost")
+			+ (config.get("dbpw") == null ? "" : " with password");
+	}
+	
+	@Override
+	protected void init() {
+		auth = new AuthPlugin(
+				new AuthorizationDispatcher(new FacebookAuthorization(), new GoogleAuthorization()),
+				new MultiAuthFeature(new FacebookFeature(), new GoogleFeature()),
+				new RememberMeInMongoDB(database, "${projectName}"));
+	}
+
+	public static String getUserId(Request req) {
+		String userId = AuthPlugin.getUserId(req.session());
+		if (userId == null || userId.isEmpty()) {
+			throw new RuntimeException("User Id ist leer!"); // Programmschutz
+		}
+		return userId;
+	}
+}

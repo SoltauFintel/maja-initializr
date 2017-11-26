@@ -1,0 +1,50 @@
+package templates.build
+plugins {
+	id "com.bmuschko.docker-java-application" version "3.0.6"
+}
+apply plugin: 'application'
+apply plugin: 'eclipse'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+compileJava.options.encoding = 'windows-1252'
+compileTestJava.options.encoding = 'windows-1252'
+
+mainClassName = '${packageName}.${appClassName}'
+distZip.enabled = false
+
+dependencies {
+${dependencies}
+
+	testCompile 'junit:junit:4.12' 
+}
+
+repositories {
+	maven { url 'https://jitpack.io' }
+	mavenCentral()
+}
+
+distTar {
+	if (target == 'base') {
+		excludes = [ jar.archiveName ]
+	} else if (target == 'app') {
+		includes = [ jar.archiveName ]
+	}
+}
+
+docker {
+	url = 'tcp://192.168.99.100:2376'
+	certPath = new File(System.properties['user.home'], '.docker/machine/machines/default')
+	javaApplication {
+		maintainer = '${author}'
+		ports = [ ${port} ]
+		def imagename = '${dockerRegistry}/${projectName}'
+		if (target == 'base') {
+			baseImage = 'openjdk:8u121-jre'
+			tag = imagename + 'base'
+		} else {
+			baseImage = imagename + 'base'
+			tag = imagename
+		}
+	}
+}
