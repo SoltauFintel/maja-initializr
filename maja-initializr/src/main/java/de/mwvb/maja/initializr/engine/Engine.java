@@ -73,14 +73,11 @@ public class Engine {
 	
 	private void copy(String src, String dest) {
 		try {
-			com.google.common.io.Files.copy(r(src), out(dest));
+			File srcFile = new File("src/main/resources/templates/" + src); // TODO That does not work in a JAR.
+			com.google.common.io.Files.copy(srcFile, out(dest));
 		} catch (IOException e) {
 			throw new RuntimeException("Error copying " + dest, e);
 		}
-	}
-	
-	private File r(String dn) {
-		return new File("src/main/resources/templates/" + dn);
 	}
 	
 	private File out(String outputFilename) {
@@ -88,29 +85,4 @@ public class Engine {
 		file.getParentFile().mkdirs();
 		return file;
 	}
-	// ## Maja initializr Webapp ##
-	// 
-	// Auswahl der Module: web, auth, auth-mongo, mongo, redis
-	// - Project Name, App-Klasse Name, Package Name
-	// - SB Admin 2 verwenden?
-	// - Quartz verwenden?
-	// - Push
-	// - Port
-	
-	// Aktionen:
-	// - Eclipse files anlegen
-	// - Gradle Dateien anlegen
-	// - App Klasse anlegen
-	// - Index Klasse samt index.html anlegen
-	// - AppConfig.properties anlegen
-	// - Auswahl Facebook, Google, only one user
-	// - banner.txt generieren
-	// - vielleicht kann man ein favicon generieren wo nur ein Buchstabe drin ist. Farbig. Quadrat oder Kreis.
-	//   Das sprengt aber den Rahmen.
-	// - Timer Klasse anlegen
-	// - Push Klasse anlegen
-	
-	
-	
-	
 }
