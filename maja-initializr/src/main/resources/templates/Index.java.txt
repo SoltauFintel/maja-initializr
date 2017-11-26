@@ -1,4 +1,4 @@
-package ${packageName};
+package ${packageName}.actions;
 
 import de.mwvb.maja.web.Action;
 
