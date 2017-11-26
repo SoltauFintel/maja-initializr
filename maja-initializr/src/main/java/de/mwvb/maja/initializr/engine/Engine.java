@@ -34,7 +34,7 @@ public class Engine {
 		
 		// HTML
 		create("html/index.html", "$R/templates/index.html");
-		create("html/login.html", "$R/templates/login.html");
+		create("html/login.html", "$R/templates/login.html", options.isMajaAuth());
 		create("html/master.html", "$R/templates/master.html");
 		create("html/menu.html", "$R/templates/menu.html");
 		create("html/banner.txt", "$R/banner.txt");
@@ -48,10 +48,17 @@ public class Engine {
 	}
 	
 	private void create(String template, String outputFilename) {
+		create(template, outputFilename, true);
+	}
+	
+	private void create(String template, String outputFilename, boolean create) {
 		outputFilename = completeOutputFilename(outputFilename);
-		
-		String text = Template.render(new ModelAndView(model, "templates/" + template));
-		writeFile(text, outputFilename);
+		if (create) {
+			String text = Template.render(new ModelAndView(model, "templates/" + template));
+			writeFile(text, outputFilename);
+		} else {
+			new File(outputFilename).delete();
+		}
 	}
 
 	private void writeFile(String text, String outputFilename) {
