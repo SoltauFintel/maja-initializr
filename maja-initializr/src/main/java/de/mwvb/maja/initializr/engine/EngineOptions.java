@@ -23,6 +23,7 @@ public class EngineOptions {
 	private String singleUser;
 	private String author = "YOUR_NAME";
 	private String dockerRegistry = "mwvb.de:5000";
+	private boolean intercoolerJS = false;
 	
 	public Map<String, Object> getModel() {
 		Map<String, Object> model = new HashMap<>();
@@ -44,6 +45,7 @@ public class EngineOptions {
 		model.put("google", isGoogleLogin());
 		model.put("sbadmin2", "SBAdmin2".equalsIgnoreCase(theme));
 		model.put("singleUser", singleUser);
+		model.put("intercoolerJS", isIntercoolerJS());
 		return model;
 	}
 	
@@ -211,5 +213,13 @@ public class EngineOptions {
 
 	public void setDockerRegistry(String dockerRegistry) {
 		this.dockerRegistry = dockerRegistry;
+	}
+
+	public boolean isIntercoolerJS() {
+		return intercoolerJS;
+	}
+
+	public void setIntercoolerJS(boolean intercoolerJS) {
+		this.intercoolerJS = intercoolerJS;
 	}
 }

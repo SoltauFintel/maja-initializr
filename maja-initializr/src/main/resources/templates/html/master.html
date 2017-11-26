@@ -13,17 +13,20 @@
 	
     <!-- Bootstrap Core & Social CSS -->
     <link href="/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css">
+#if ($auth)    
     <link href="/bootstrap/bootstrap-social.css" rel="stylesheet" type="text/css">
+#end
+#if ($sbadmin2)
 
     <!-- MetisMenu CSS -->
     <link href="/metisMenu/metisMenu.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom CSS -->
     <link href="/sbadmin2/sb-admin-2.min.css" rel="stylesheet" type="text/css">
+#end
 
     <!-- Custom Fonts -->
     <link href="/fontawesome/font-awesome.min.css" rel="stylesheet" type="text/css">
-	<link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet" type="text/css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -34,15 +37,6 @@
 
 	<style>
 		* { font-family: 'Verdana'; }
-		.header { font-size: 300%; font-family: 'Shadows Into Light'; font-weight: bold; font-style: italic; margin-bottom: 0; margin-top: 0; }
-		.user { font-size: 70%; }
-		.username { font-weight: bold; }
-		pre.mono { font-family: Monospace; }
-		pre.mono a { font-family: Monospace; text-decoration: none; }
-		pre.mono a:visited { font-family: Monospace; text-decoration: none; }
-		pre.mono a:hover { font-family: Monospace; text-decoration: none; }
-		pre.log { font-size: 80%; min-height: 10em; max-height: 40em; }
-		pre.errorlog { color: #c00; }
 	</style>
 </head>
 <body>
@@ -86,9 +80,13 @@ $bodyContent
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="/bootstrap/bootstrap.min.js"></script>
+#if ($sbadmin2)	
     <script src="/metisMenu/metisMenu.min.js"></script>
 	<script src="/sbadmin2/sb-admin-2.min.js"></script>
+#end
+#if ($intercoolerJS)	
 	<script src="https://intercoolerreleases-leaddynocom.netdna-ssl.com/intercooler-1.1.1.min.js"></script>
+#end	
 </body>
 </html>
 \#end
