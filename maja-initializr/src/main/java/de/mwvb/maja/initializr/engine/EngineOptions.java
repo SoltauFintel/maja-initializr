@@ -173,6 +173,9 @@ public class EngineOptions {
 
 	public void setFacebookLogin(boolean facebookLogin) {
 		this.facebookLogin = facebookLogin;
+		if (facebookLogin) {
+			setMajaAuth(true);
+		}
 	}
 
 	public boolean isGoogleLogin() {
@@ -181,6 +184,9 @@ public class EngineOptions {
 
 	public void setGoogleLogin(boolean googleLogin) {
 		this.googleLogin = googleLogin;
+		if (googleLogin) {
+			setMajaAuth(true);
+		}
 	}
 
 	public String getSingleUser() {
