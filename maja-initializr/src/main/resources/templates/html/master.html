@@ -1,15 +1,15 @@
-#macro(master)
+\#macro(master)
 <!DOCTYPE html>
 <html lang="de">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	#if ($title)
+	\#if ($title)
 	<title>$title</title>
-	#else
-	<title>[projectName]</title>
-	#end
+	\#else
+	<title>${theProjectName}</title>
+	\#end
 	
     <!-- Bootstrap Core & Social CSS -->
     <link href="/bootstrap/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -58,7 +58,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">[projectName]</a>
+                <a class="navbar-brand" href="/">${theProjectName}</a>
             </div>
             <!-- /.navbar-header -->
             
@@ -68,7 +68,7 @@
 <!-- *MENU* -->
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
-                	#include ("templates/menu.html")
+                	\#include ("templates/menu.html")
                 </div>
             </div>
             <!-- /*MENU* -->
@@ -91,4 +91,4 @@ $bodyContent
 	<script src="https://intercoolerreleases-leaddynocom.netdna-ssl.com/intercooler-1.1.1.min.js"></script>
 </body>
 </html>
-#end
+\#end

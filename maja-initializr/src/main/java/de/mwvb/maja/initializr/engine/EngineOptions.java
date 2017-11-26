@@ -34,6 +34,7 @@ public class EngineOptions {
 		m.put("author", author);
 		m.put("dockerRegistry", dockerRegistry);
 		m.put("dependencies", getDependencies());
+		m.put("master", "#@master()");
 		return m;
 	}
 	

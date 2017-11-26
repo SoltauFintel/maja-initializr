@@ -1,2 +1,2 @@
-[projectName]
+${theProjectName}
      powered by Maja

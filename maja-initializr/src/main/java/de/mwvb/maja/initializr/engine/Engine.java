@@ -3,7 +3,6 @@ package de.mwvb.maja.initializr.engine;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Map;
 
 import de.mwvb.maja.web.Template;
@@ -34,11 +33,11 @@ public class Engine {
 		copy("build/gradle-wrapper.properties", "gradle/wrapper/gradle-wrapper.properties");
 		
 		// HTML
-		copyTemplate("html/index.html", "$R/templates/index.html");
-		copyTemplate("html/login.html", "$R/templates/login.html");
-		copyTemplate("html/master.html", "$R/templates/master.html");
-		copyTemplate("html/menu.html", "$R/templates/menu.html");
-		copyTemplate("html/banner.txt", "$R/banner.txt");
+		create("html/index.html", "$R/templates/index.html");
+		create("html/login.html", "$R/templates/login.html");
+		create("html/master.html", "$R/templates/master.html");
+		create("html/menu.html", "$R/templates/menu.html");
+		create("html/banner.txt", "$R/banner.txt");
 		
 		// Classes
 		create("App.java.txt", "$J/$P/" + options.getAppClassName() + ".java");
@@ -53,19 +52,6 @@ public class Engine {
 		
 		String text = Template.render(new ModelAndView(model, "templates/" + template));
 		writeFile(text, outputFilename);
-	}
-
-	private void copyTemplate(String template, String outputFilename) {
-		outputFilename = completeOutputFilename(outputFilename);
-		
-		try {
-			String text = new String(Files.readAllBytes(r(template).toPath()));
-			text = text.replace("[projectName]", options.getProjectName());
-			writeFile(text, outputFilename);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException("Error create special file " + outputFilename, e);
-		}
 	}
 
 	private void writeFile(String text, String outputFilename) {
