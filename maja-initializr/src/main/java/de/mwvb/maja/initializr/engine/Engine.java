@@ -23,7 +23,7 @@ public class Engine {
 		
 		// Eclipse files
 		create("project.txt", ".project");
-		create("classpath.txt", ".classpath");
+//		create("classpath.txt", ".classpath");
 		
 		// Build
 		create("build/build.gradle", "build.gradle");
@@ -45,6 +45,8 @@ public class Engine {
 		
 		// Config
 		create("AppConfig.properties", "AppConfig.properties");
+		new File(outputRoot + options.getProjectName().toLowerCase() + "/src/test/java").mkdirs();
+		new File(outputRoot + options.getProjectName().toLowerCase() + "/src/main/resources/web").mkdirs();
 	}
 	
 	private void create(String template, String outputFilename) {
@@ -88,8 +90,16 @@ public class Engine {
 	}
 	
 	private File out(String outputFilename) {
-		File file = new File(outputRoot + options.getProjectName() + "/" + outputFilename);
+		File file = new File(outputRoot + options.getProjectName().toLowerCase() + "/" + outputFilename);
 		file.getParentFile().mkdirs();
 		return file;
+	}
+
+	public String getOutputRoot() {
+		return outputRoot;
+	}
+
+	public void setOutputRoot(String outputRoot) {
+		this.outputRoot = outputRoot;
 	}
 }

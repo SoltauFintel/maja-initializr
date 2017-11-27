@@ -39,7 +39,7 @@ public class ${appClassName} extends AbstractWebApp {
 	}
 	
 	public static void main(String[] args) {
-		new App().start(VERSION);
+		new ${appClassName}().start(VERSION);
 	}
 #if ($mongo)
 

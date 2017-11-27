@@ -11,13 +11,15 @@ public class EngineTest {
 		o.setPackageName("com.anything.django");
 		o.setAppClassName("DjangoApp");
 		o.setAuthor("Mister Django");
-		o.setMajaAuthMongo(true);
-		o.setFacebookLogin(true);
-		o.setGoogleLogin(true);
-		o.setMajaRedis(true);
-		o.setIntercoolerJS(true);
+//		o.setMajaAuthMongo(true);
+//		o.setFacebookLogin(true);
+//		o.setGoogleLogin(true);
+//		o.setMajaRedis(true);
+//		o.setIntercoolerJS(true);
 		o.setPort(9022);
 		o.setTheme("sbadmin2");
-		new Engine(o).generate();
+		Engine e = new Engine(o);
+		e.setOutputRoot("C:/_workspaces/mars/lunafox/");
+		e.generate();
 	}
 }
