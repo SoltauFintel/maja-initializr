@@ -2,20 +2,10 @@ package ${packageName};
 
 #if ($auth)
 import de.mwvb.maja.auth.AuthPlugin;
-import de.mwvb.maja.auth.AuthorizationDispatcher;
-import de.mwvb.maja.auth.MultiAuthFeature;
-#end
-#if ($facebook)
-import de.mwvb.maja.auth.facebook.FacebookAuthorization;
-import de.mwvb.maja.auth.facebook.FacebookFeature;
-#end
-#if ($google)
-import de.mwvb.maja.auth.google.GoogleAuthorization;
-import de.mwvb.maja.auth.google.GoogleFeature;
 #end
 #if ($authMongo)
 import de.mwvb.maja.auth.rememberme.KnownUser;
-import de.mwvb.maja.auth.rememberme.RememberMeInMongoDB;
+import de.mwvb.maja.auth.rememberme.AuthPluginWithRememberMe;
 #end
 #if ($mongo)
 import de.mwvb.maja.mongo.Database;
@@ -28,10 +18,6 @@ import spark.Request;
 
 public class ${appClassName} extends AbstractWebApp {
 	public static final String VERSION = "0.1.0";
-#if ($mongo)	
-	public static Database database;
-	public static final String DBNAME = "${projectName}";
-#end
 
 	@Override
 	protected void routes() {
@@ -45,49 +31,21 @@ public class ${appClassName} extends AbstractWebApp {
 
 	@Override
 	protected void initDatabase() {
-		database = new Database(config.get("dbhost", "localhost"), config.get("dbname", DBNAME),
-				config.get("dbuser"), config.get("dbpw"),
-				KnownUser.class); // TODO add your entity
-	}
-	
-	@Override
-	protected String getDatabaseInfo() {
-		return "MongoDB database: " + config.get("dbname", DBNAME) + "@" + config.get("dbhost", "localhost")
-			+ (config.get("dbpw") == null ? "" : " with password");
+#if ($authMongo)	
+		Database.open(KnownUser.class); // TODO add your entity
+#else
+		Database.open(); // TODO add your entity
+#end
 	}
 #end
 #if ($auth)
 	
 	@Override
 	protected void init() {
-#if ($facebook && $google && $authMongo)	
-		auth = new AuthPlugin(
-				new AuthorizationDispatcher(new FacebookAuthorization(), new GoogleAuthorization()),
-				new MultiAuthFeature(new FacebookFeature(), new GoogleFeature()),
-				new RememberMeInMongoDB(database, "${projectName_uppercase}"));
-#end				
-#if ($facebook && $google && !$authMongo)	
-		auth = new AuthPlugin(
-				new AuthorizationDispatcher(new FacebookAuthorization(), new GoogleAuthorization()),
-				new MultiAuthFeature(new FacebookFeature(), new GoogleFeature()));
-#end				
-#if ($facebook && !$google && $authMongo)	
-		auth = new AuthPlugin(
-				new FacebookAuthorization(),
-				new FacebookFeature(),
-				new RememberMeInMongoDB(database, "${projectName_uppercase}"));
-#end				
-#if ($facebook && !$google && !$authMongo)	
-		auth = new AuthPlugin(new FacebookAuthorization(), new FacebookFeature());
-#end				
-#if (!$facebook && $google && $authMongo)	
-		auth = new AuthPlugin(
-				new GoogleAuthorization(),
-				new GoogleFeature(),
-				new RememberMeInMongoDB(database, "${projectName_uppercase}"));
-#end				
-#if (!$facebook && $google && !$authMongo)	
-		auth = new AuthPlugin(new GoogleAuthorization(), new GoogleFeature());
+#if ($authMongo)	
+		auth = new AuthPluginWithRememberMe();
+#else if ($auth)
+		auth = new AuthPlugin();
 #end				
 	}
 

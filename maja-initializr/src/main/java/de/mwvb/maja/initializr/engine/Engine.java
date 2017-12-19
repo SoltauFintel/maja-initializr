@@ -23,7 +23,7 @@ public class Engine {
 		
 		// Eclipse files
 		create("project.txt", ".project");
-//		create("classpath.txt", ".classpath");
+		// wird erstmal nicht erstellt, soll durch Gradle/eclipse erzeugt werden -- create("classpath.txt", ".classpath");
 		
 		// Build
 		create("build/build.gradle", "build.gradle");
@@ -31,6 +31,7 @@ public class Engine {
 		copy("build/gradlew.bat", "gradlew.bat");
 		copy("build/gradle-wrapper.jar", "gradle/wrapper/gradle-wrapper.jar");
 		copy("build/gradle-wrapper.properties", "gradle/wrapper/gradle-wrapper.properties");
+		create("build/gitignore", ".gitignore");
 		
 		// HTML
 		create("html/index.html", "$R/templates/index.html");

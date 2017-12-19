@@ -50,20 +50,20 @@ public class EngineOptions {
 	}
 	
 	private String getDependencies() {
-		String artifacts = "[$G:maja-web:0.1.2]";
+		String artifacts = "[$G:maja-web:0.2.0]";
 		if (isMajaAuth()) {
-			artifacts += ",[$G:maja-auth:0.1.2]";
+			artifacts += ",[$G:maja-auth:0.2.0]";
 		}
 		if (isMajaAuthMongo()) {
-			artifacts += ",[$G:maja-auth-mongo:0.1.3]";
+			artifacts += ",[$G:maja-auth-mongo:0.2.0]";
 		}
 		if (isMajaMongo()) {
-			artifacts += ",[$G:maja-mongo:0.1.1]";
+			artifacts += ",[$G:maja-mongo:0.2.0]";
 		}
 		if (isMajaRedis()) {
-			artifacts += ",[$G:maja-redis:0.1.0]";
+			artifacts += ",[$G:maja-redis:0.2.0]";
 		}
-		return artifacts.replace("[", "\tcompile '").replace("]", "'").replace(",", "\r\n").replace("$G", "com.github.SoltauFintel");
+		return artifacts.replace("[", "\tcompile '").replace("]", "'").replace(",", "\r\n").replace("$G", "com.github.SoltauFintel.maja");
 	}
 
 	public void validate() {
